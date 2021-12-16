@@ -3,8 +3,8 @@
 {% block title%}cart Page{% endblock %}
 
 {% block body %}
-{% comment %} {{c.0.cart.0.quantity}} {% endcomment %}
-{{c.2.grand_total}}
+ 
+{% comment %} {{c.2.grand_total}} {% endcomment %}
 {% comment %} {{c.0.cart.0.ima}} {% endcomment %}
 
 {% comment %} {% for products in c.0.cart %} {% endcomment %}
@@ -23,6 +23,7 @@
                 {{prod.price}}
             {% endfor %}  {% endcomment %}
             {% for products in c.0.cart %}
+            {{products.user_id}}
             <div class="col-lg-2 mx-auto">
             <img src="/{{products.product.image}}" class="d-block w-100" style = "width:150px;height:150px" alt="...">
 
@@ -110,7 +111,41 @@
     </div>
 
     <div class="col-lg-3 mx-auto">
-        {% comment %} <h1>cart page</h1> {% endcomment %}
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  checkout
+</button>
+
+<!-- Modal -->
+<p>/check-out/{{products.user_id}}/</p>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Checkout Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class ="modal-body">
+          <div class ="m-2 p-3">
+            <form action="/check-out/{{c.0.cart.0.user_id}}/" method = "POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="">Address</label>
+                <input type="text" name="address" id="addressid" class="form-control" placeholder="" aria-describedby="helpId">
+              </div>
+
+              <div class="form-group">
+                <label for="">Phone</label>
+                <input type="text" name="phone" id="phoneid" class="form-control" placeholder="" aria-describedby="helpId">
+              </div>
+              <input type="submit" class="btn float-right bgn-outline-info col-lg-6   " value = "check-out"> 
+            </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
     </div>
 
 </div>

@@ -23,6 +23,8 @@ urlpatterns = [
     path("remove_item",views.remove_item,name="remove_add"),
     path("add_item_cart",views.add_item_cart,name="item_add_cart"),
     path("remove_item_cart",views.remove_item_cart,name="remove_add_cart"),
+    path("check-out/<int:id>/",views.checkout,name="check-out"),
+
 
 
 

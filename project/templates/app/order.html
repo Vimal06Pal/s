@@ -1,0 +1,36 @@
+{% extends 'app/base.html' %}
+
+{% block title%}order Page{% endblock %}
+
+{% block body %}  
+{% comment %} {{order.0.product.name}} {% endcomment %}
+{% for items in order %} 
+        {{items.product}}
+{% endfor %}
+<table class="table table-striped table-bordered table-sm">  
+    <thead class="thead-dark">  
+    <tr>  
+        <th>product Image</th>  
+        <th>Product Name</th>  
+        <th>quantity</th>  
+        <th>Price</th>  
+        {% comment %} <th>Actions</th>   {% endcomment %}
+    </tr>  
+    </thead>  
+    <tbody>  
+{% for items in order %}       
+    <tr>  
+        {% comment %} <td>{{ items.product.image }}</td>  {% endcomment %}
+        <td><img src="/{{ items.product.image }}" class="d-block w-100" style = "width:150px;height:150px" alt="..."></td>
+        <td>{{ items.product.name }}</td>  
+        <td>{{ items.quantity }}</td>  
+        <td>{{ items.price }}</td>  
+  
+    </tr>  
+{% endfor %}  
+    </tbody>  
+</table>  
+<br>  
+<br>  
+{% comment %} <center><a href="/blog/" class="btn btn-primary">Add New Record</a></center>   {% endcomment %}
+{% endblock %}

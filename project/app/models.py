@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import User
-# from datetime import date, datetime
+import  datetime
 # from django.utils.timezone import now
 
 # dat=now()
@@ -74,3 +74,13 @@ class Cart(models.Model):
     quantity = models.IntegerField()
     created_at = models.DateField(auto_now_add=True)
 
+
+class Order(models.Model):
+    product = models.ForeignKey(Product,on_delete = models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.IntegerField()
+    address  =models.CharField(max_length=255,default='',blank=True)
+    phone = models.CharField(max_length=15,default='',blank=True)
+    order_dated = models.DateField(default = datetime.datetime.today)
+ 

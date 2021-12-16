@@ -7,14 +7,17 @@ def get_place(zipcode):
     geolocator = Nominatim(user_agent="geoapiExercises")
     location = geolocator.geocode(zipcode)
     str_location = str(location)
-    place=str_location.split(',')[1] + '-' + zipcode
-    return(place)
+    if str_location.split(',')[-1] ==" India":
+        place=str_location.split(',')[1] + '-' + zipcode
+        return(place)
+    else:
+        return('')
 
 
 
 import datetime
 now = datetime.datetime.now().strftime('%A')
-print(now)
+# print(now)
 # print((now.strftime("%A"))=="Wednesday")
 
 def offer(day):
@@ -30,7 +33,7 @@ def offer(day):
 # Zipocde input
 # zipcode = "201301"
 # place = get_place(zipcode)
-# print(place)
+# print((place[4])==" India")
 
 # Using geocode()
 

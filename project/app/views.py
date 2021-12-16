@@ -9,7 +9,6 @@ from .helper import get_place, offer
 
 
 
-
 # Create your views here.
 
 def index(request):
@@ -43,6 +42,7 @@ def view_product(request):
 
         product = Product(name= name,price = price,category = Category.objects.get(name = category),description = description,image = upload_file,multiple_images = text_form)
         product.save()
+        # .__dict__
 
 
     getall_category = Category.objects.all()
@@ -234,9 +234,13 @@ def productview(request,name):
     #     pass
     context5 ={"product_quantity":product_quantity}
     # pincode = Pincode()
-    pincode = Pincode.objects.get(user = request.user)
-    print(pincode)
-    context4 = {"pincode":pincode}
+    context4 ={}
+    try:
+        pincode = Pincode.objects.get(user = request.user)
+        print(pincode.address)
+        context4 = {"pincode":pincode}
+    except:
+        pass
   
     context2 = {"demo":file}
     
@@ -281,20 +285,35 @@ def check_pincode(request):
         # print(zipcode)
 
         place = get_place(zipcode)
-        try:
-            pincode = Pincode.objects.filter(user = request.user)
-            pincode.delete()
-        except:
-            pass
-        pincode = Pincode()
-        pincode.address = place
-        pincode.zipcode = zipcode
-        pincode.user = request.user
-        pincode.save()
-        product = Product.objects.get(id = name)
+        if place != None:
+            try:
+                pincode = Pincode.objects.filter(user = request.user)
+                pincode.delete()
+            except:
+                pass
+            pincode = Pincode()
+            pincode.address = place
+            pincode.zipcode = zipcode
+            pincode.user = request.user
+            pincode.save()
+            product = Product.objects.get(id = name)
 
-        print("pincode saved to db============")
+            print("pincode saved to db============")
+        else:
+            try:
+                pincode = Pincode.objects.filter(user = request.user)
+                pincode.delete()
+            except:
+                pass
+            # pincode = Pincode()
+            # pincode.address = "Delivery not available"
+            # pincode.zipcode = zipcode
+            # pincode.user = request.user
+            # pincode.save()
+            product = Product.objects.get(id = name)
+            pass
         return redirect("productview",name= product.name)
+
     return render(request,"app/see_product.html")
     
 
@@ -368,6 +387,8 @@ def cartpage(request,id):
     price_quantity={}
     now = datetime.datetime.now().strftime('%A')
     day  =offer(now)
+    print(day)
+    k=''
     for k,v in day.items():
         category = k
         discount = v
@@ -493,3 +514,29 @@ def remove_item_cart(request):
     product = Product.objects.get(id = product_id)
     return redirect("cartpage",id= usern.id)
     # return(render(request,"app/base.html"))
+
+def checkout(request,id):
+    address =request.POST.get("address")
+    phone = request.POST.get("phone")
+    # usern = request.user
+    cart =Cart.objects.filter(user = request.user)
+    # print(cart)
+    print("---------------------------runninn")
+    for item in cart:
+
+        price = item.product.price
+        order = Order()
+        order.product = item.product
+        order.user = request.user
+        order.price = item.product.price * item.quantity
+        order.quantity = item.quantity
+        order.address = address
+        order.phone = phone
+        order.save()
+        cart = Cart.objects.get(product = item.product,user = request.user)
+        cart.delete()
+
+    order = Order.objects.filter(user = request.user) 
+    context = {"order":order} 
+       
+    return render(request,"app/order.html",context)
