@@ -1,0 +1,123 @@
+{% extends 'app/base.html' %}
+
+{% block title%}cart Page{% endblock %}
+
+{% block body %}
+{% comment %} {{c.0.cart.0.quantity}} {% endcomment %}
+{{c.2.grand_total}}
+{% comment %} {{c.0.cart.0.ima}} {% endcomment %}
+
+{% comment %} {% for products in c.0.cart %} {% endcomment %}
+    {% comment %} {{products}} {% endcomment %}
+
+<div class="row mt-5" >
+    <div class="col-lg-2 mx-auto">
+    </div>
+
+    <div class="col-lg-7 mx-auto">
+
+        <div class="card w-78">
+            <div class="row mt-2" >
+
+             {% comment %} {% for prod in products %}
+                {{prod.price}}
+            {% endfor %}  {% endcomment %}
+            {% for products in c.0.cart %}
+            <div class="col-lg-2 mx-auto">
+            <img src="/{{products.product.image}}" class="d-block w-100" style = "width:150px;height:150px" alt="...">
+
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <div class="card-body">
+                <h5 class="card-title">{{products.product.name}}</h5>
+                <p class="card-text">{{products.product.description}}</p>
+
+                <label for="quantitylabel" class="form-label">Qty.</label>
+        
+        <h5 class="card-title">{{products.quantity}}</h5>
+
+
+
+      <div   class="container">
+        
+        <form  method = "post" action="/add_item_cart" class = "col-lg-6">
+          {% csrf_token %}
+          <div class="card-body">
+          <div class="mb-2">
+          <button type="submit" class="btn btn-primary" style = "margin-top:4px;margin-bottom:2px"> +</button>
+          <input type="hidden" id="Id" name="name" value={{products.product.id}}>
+          </div>
+          {% comment %} <a href="#" class="btn btn-primary btn-lg">Buy Now</a> {% endcomment %}
+          </div>
+        </form>
+
+        <form  method = "post" action="/remove_item_cart" class = "col-lg-6">
+          {% csrf_token %}
+          <div class="card-body">
+          <div class="mb-2">
+          <button type="submit" class="btn btn-primary" style = "margin-top:4px;margin-bottom:2px"> -</button>
+          <input type="hidden" id="Id" name="name" value={{products.product.id}}>
+
+
+          </div>
+          {% comment %} <a href="#" class="btn btn-primary btn-lg">Buy Now</a> {% endcomment %}
+          </div>
+        </form>
+
+      </div>
+                {% comment %} <form  method = "post" action ="/">
+                    {% csrf_token %} {% endcomment %}
+                    {% comment %} <input hidden type ="text" name = 'product' value =''>
+                    <input hidden type = "number" name ="remove" value =''> {% endcomment %}
+
+                    {% comment %} <input type="submit" value='-' class="btn btn-block btn-light">
+                    <input type= "text" class="text-center col">
+                    <input type="submit" value='+' class="btn btn-block btn-light"> {% endcomment %}
+
+      
+                     {% comment %} <label for="quantitylabel" class="form-label">Qty.</label>
+                    <select id="quantityid" name="quantity" >
+                        <option value="1">{{products.quantity}}</option>
+                        <option value="2">1</option>
+                        <option value="3">2</option>
+                        <option value="4">3</option>
+                        <option value="5">4</option>
+                        <option value="6">5</option>
+          
+                      </select>  {% endcomment %}
+                    {% comment %} </form>  {% endcomment %}
+                {% comment %} <a href="#" class="btn btn-primary">Button</a> {% endcomment %}
+                </div>
+                
+            </div>
+            <div class="col-lg-3 mx-auto">
+                <h4 class="card-title">{{products.product.price}}</h4>
+
+                {% comment %} <h1>cart page</h1> {% endcomment %}
+
+                </div>
+            <div class="mb-3">
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-5 mx-auto">
+        
+
+
+<h3 style="margin-left:210px">grand total - Rs{{c.2.grand_total}} </h3>
+        </div>
+    </div>
+
+    <div class="col-lg-3 mx-auto">
+        {% comment %} <h1>cart page</h1> {% endcomment %}
+    </div>
+
+</div>
+<div>
+{% comment %} {% endfor %} {% endcomment %}
+</div>
+
+
+
+{% endblock %}

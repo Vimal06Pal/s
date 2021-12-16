@@ -1,0 +1,28 @@
+{% extends 'app/base.html' %}
+
+{% block title%}add category{% endblock %}
+{% block body %} 
+
+<div class ="container my-3"> 
+    <h3>Add Category</h3>
+    <form  method = "post" action="" >
+        {% csrf_token %}
+      <div class="container">
+    
+
+    
+ 
+    
+      <div class="mb-2">
+        <label for="category" class="form-label">Category</label>
+        <input type="text" class="form-control" id="categoryid" name = "category">
+      </div>
+ 
+    
+      <div class="mb-2;mt-2 ">
+   
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+
+  {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'app/base.html' %}
+
+{% block title %} UploadImage {% endblock title %} 
+
+{% block body %}
+<form method='post' enctype = 'multipart/form-data'>
+{% csrf_token %}
+<input type="text"  name ="filename">
+<input type="file" multiple name ="uploadfols",id="name" required/>
+{% comment %} {{ form }} {% endcomment %}
+<div>
+<button type="submit">Upload file</button>
+</div>
+
+</form>
+{% endblock body %}

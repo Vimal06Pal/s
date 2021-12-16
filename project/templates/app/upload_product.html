@@ -1,0 +1,53 @@
+{% extends 'app/base.html' %}
+
+{% block title%}Blogz Page{% endblock %}
+
+{% block body %} 
+<div class ="container my-3"> 
+<h3>Add Product</h3>
+<form  method = "post" action="" enctype = 'multipart/form-data'>
+    {% csrf_token %}
+  <div class="container">
+
+  <div class="mb-2">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="nameid" name = "name">
+  </div>
+
+    <div class="mb-2">
+    <label for="price" class="form-label">Price</label>
+    <input type="text" class="form-control" id="priceid" name = "price">
+  </div>
+  <div class="mb-2">
+    <label for="categorylabel" class="form-label">Category</label>
+    <div>
+    <select id="categories" name="category">
+        {% for value in getall_category %}
+        <option value={{value}}>{{value}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+  </div>
+  <div class="mb-2 ">
+   <label for="description" class="form-label">Description</label>
+    <textarea type="text" class="form-control" id="descriptionid" name= "description" cols="20" rows="5"></textarea>
+  </div>
+
+  <div class="mb-2;mt-2 ">
+    <div >
+    <label for="uploadimage" class="form-label">Product image</label>
+    <input type="file" name ="document"
+  </div>
+   </div>
+
+  <label for="uploadimage" class="form-label">Multiple image</label>
+
+<input type="file" multiple name ="uploadfols",id="name" required/>
+<div>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+<div></div>
+</form>
+</div>
+{% endblock body %} 

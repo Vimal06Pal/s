@@ -1,0 +1,173 @@
+{% extends 'app/base.html' %}
+
+{% block title%}E-shop{% endblock %}
+
+{% block body %}
+{{c.5.product_quantity.0.user}}
+
+  <div class="container-fluid">
+    <div class="row mt-5" >
+      <div class="col-lg-1 mx-auto">
+        <div class="list-group">
+
+          {% for image  in c.2.demo %}
+            <div class="mb-3">
+            <img src="/{{image}}" class="card-img-top" style="width:100px;height:100px" alt="...">
+            </div>
+          {% endfor %}
+          
+          
+        </div>
+      </div>
+
+      <div class="col-lg-4 mx-auto">
+        <div class="list-group">
+          <img src="/{{c.2.demo.0}}" class="card-img-top" style="width:400px;height:400px" alt="..."> 
+        </div>
+      </div>
+
+      
+      <div id= "products" class="col-lg-3 mx-auto">
+<div class="row mx-auto">
+    
+{% comment %} {% for product in c.0.products %} {% endcomment %}
+{% comment %} {% for product in products %} {% endcomment %}
+    <div class="card mx-auto mt-3" style="width: 18rem;">
+        {% comment %} <img src="/{{product.image}}" class="card-img-top" style="width:250px;height:200px" alt="..."> {% endcomment %}
+        <div class="card-body">
+        <h3 class="card-title">{{c.0.products.name }}</h3>
+        <h1 class="card-title">Rs {{c.0.products.price }}.00</h1>
+
+
+        <p class="card-text">{{c.0.products.description}}</p>
+        </div>
+    </div>
+{% comment %} {% endfor %} {% endcomment %}
+{% comment %} {% endfor %} {% endcomment %}
+</div>
+
+<div class ="container mt-4"> 
+  <form  method = "post" action="/addcomment">
+      {% csrf_token %}
+      <div class="mb-20 ">
+  <h2> Comments ({{c.3.all_comments.count}})</h2>
+  <label for="content" class="form-label"> post Comments</label style="margin-left :300px">
+          <textarea type="text" class="form-control" style="margin-bottom:5px" id="commentid" name= "comments" cols="20" rows="1"></textarea>
+          <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+
+     </div>
+
+  </form>
+  <br>
+ 
+  {% for value in c.3.values %}
+  {% comment %} <h5>{{ value.0.user }}</h5> {% endcomment %}
+      {% for val in value %}
+  <div class= "row my-3"> 
+      <div class ="col-md-2"><strong> {{val.user}}-</strong> </div>  
+      <div class ="col-md-10"> {{val.body}}</div>
+     
+  </div>  
+
+
+      {% comment %} <h3 style ="margin-left:30px">{{val.user}}</h3>
+      <br></br>
+      <h5 style ="margin-left:30px">{{val.body}}<h5> {% endcomment %}
+  {% endfor %}
+  {% endfor %}
+</br>
+</div>
+
+</div>
+
+<div class="card mx-auto mt-3" style="width: 18rem;">
+    <div class="mx-2">
+      <div class="mt-2">
+
+        
+      </div>
+    
+    <div class="card-body">
+      <form  method = "post" action="/check">
+        {% csrf_token %}
+        <label for="Deliveryto" class="form-label">Delivery to.</label>
+        <input type="text" class="form-control" id="pincodeid" name = "pincode" placeholder="zipcode">
+        <button type="submit" class="btn btn-primary" style = "margin-top:4px;margin-bottom:2px">check</button>
+        <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+
+      </form>
+        <h5 class="card-title">{{c.4.pincode.address}}</h5>
+      
+      
+        <h1 class="card-title">Rs {{c.0.products.price }}.00</h1>
+
+    </div>
+
+    
+        {% comment %} <img src="/{{product.image}}" class="card-img-top" style="width:250px;height:200px" alt="..."> {% endcomment %}
+
+       
+
+{% if c.5.product_quantity.0.quantity %}
+
+        <label for="quantitylabel" class="form-label">Qty.</label>
+        
+        <h5 class="card-title">{{c.5.product_quantity.0.quantity}}</h5>
+
+
+
+      <div   class="container">
+        
+        <form  method = "post" action="/add_item" class = "col-lg-6">
+          {% csrf_token %}
+          <div class="card-body">
+          <div class="mb-2">
+          <button type="submit" class="btn btn-primary" style = "margin-top:4px;margin-bottom:2px"> +</button>
+          <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+          </div>
+          {% comment %} <a href="#" class="btn btn-primary btn-lg">Buy Now</a> {% endcomment %}
+          </div>
+        </form>
+
+        <form  method = "post" action="/remove_item" class = "col-lg-6">
+          {% csrf_token %}
+          <div class="card-body">
+          <div class="mb-2">
+          <button type="submit" class="btn btn-primary" style = "margin-top:4px;margin-bottom:2px"> -</button>
+          <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+          </div>
+          {% comment %} <a href="#" class="btn btn-primary btn-lg">Buy Now</a> {% endcomment %}
+          </div>
+        </form>
+
+<a href="/cartpage/{{c.5.product_quantity.0.user_id}}" class="btn btn-primary btn-lg" style='color:black;background-color:yellow;margin-right:3px'>cart</a>
+
+      </div>
+
+    {% else %}
+    {% comment %} {{c.5.product_quantity.0.quantity}} {% endcomment %}
+      <form  method = "post" action="/add_to_cart" class= "col-lg-4" >
+        {% csrf_token %}
+        <div class="card-body">
+        <div class="mb-2">
+        <button type="submit" class="btn btn-primary" style = "margin-top:4px;margin-bottom:2px">ADD CART</button>
+        <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+        </div>
+        {% comment %} <a href="#" class="btn btn-primary btn-lg">Buy Now</a> {% endcomment %}
+      </div>
+    </form>
+    {% endif %}  
+
+    </div>
+      </div>
+    </div>
+
+<div class="col-lg-4 mx-auto">
+
+
+  </div>
+
+{% endblock body %} 
+

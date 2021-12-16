@@ -1,0 +1,71 @@
+{% extends 'app/base.html' %}
+
+{% block title%}E-shop{% endblock %}
+
+{% block body %}
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{{c.2.images.0}}" class="d-block w-100" alt="...">
+      </div>
+      {% for image in c.2.images %}
+      <div class="carousel-item">
+        <img src="{{image}}" class="d-block w-100" alt="...">
+      </div>
+      {% endfor %}
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div> 
+
+  <div class="container-fluid">
+    <div class="row mt-5" >
+      <div class="col-lg-3 mx-auto">
+        <div class="list-group">
+          <a href="/allproduct" class="list-group-item list-group-item-action ">All Items</a>
+          {% for category  in c.3.categories %}
+          <a href="?category={{category.id}}" 
+          class="list-group-item list-group-item-action "> {{category}}</a>
+          {% endfor %}
+          
+          
+        </div>
+      </div>
+      <div id= "products" class="col-lg-9 mx-auto">
+
+<div class="row mx-auto">
+    
+{% for product in c.0.products %}
+{% comment %} {% for product in products %} {% endcomment %}
+    <div class="card mx-auto mt-3" style="width: 18rem;">
+      <a href="/productview/{{product.name}}">
+        <img src="/{{product.image}}" class="card-img-top" style="width:250px;height:200px" alt="...">
+      </a>  
+        <div class="card-body">
+        {% comment %} <h5 class="card-title">{{product.name}}</h5> {% endcomment %}
+        {% comment %} <a href="/productview/{{product.name}}" class="list-group-item list-group-item-action ">{{product.name}}</a> {% endcomment %}
+        <a href="/productview/{{product.name}}" style="text-decoration:none;" class="text-dark">
+        <h5><b>{{product.name}}</b></h5>
+        </a>
+        <p class="card-text">Rs{{product.price}}</p>
+        <p class="card-text">{{product.description}}</p>
+        {% comment %} <a href="#" class="btn btn-primary">ADD to Cart</a> {% endcomment %}
+        </div>
+    </div>
+{% endfor %}
+{% comment %} {% endfor %} {% endcomment %}
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock body %} 
+
