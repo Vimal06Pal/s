@@ -25,6 +25,8 @@ def offer(day):
     if day =="Wednesday":
         d["saree"] = 10
     return(d)
+    # else:
+    #     return(0)
 
 # off  =offer(now.strftime("%A"))
 # print(off)

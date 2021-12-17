@@ -1,4 +1,4 @@
 from django.contrib import admin
 from .models import *
-# Register your models here.
-admin.site.register([Product,Category,AddCarousel,Order])
+# Register your models here.,
+admin.site.register([Product,Category,Comments,AddCarousel,Order,Rating])

@@ -225,8 +225,11 @@ def productview(request,name):
     file = file[:len(file)-1]
     print(file)
     context3= {}
-    # all_comments  =Comments.objects.filter(product = product)
-    # context3 ={"all_comments":all_comments}
+    all_comments  =Comments.objects.filter(product = product)
+    context3 ={"all_comments":all_comments}
+
+    all_rating = Rating.objects.filter(product = product)
+    context6 = {"all_rating":all_rating} 
     # try:
     product_quantity = Cart.objects.filter(product = product, user = request.user)
     print(product_quantity)
@@ -252,30 +255,38 @@ def productview(request,name):
     else:
         context1 = {"userr":request.user}
     
-    return render(request,"app/see_product.html",{"c":[context,context1,context2,context3,context4,context5]})
+    return render(request,"app/see_product.html",{"c":[context,context1,context2,context3,context4,context5,context6]})
 
-# def addcomments(request):
-#     if request.method =="POST":
-#         print("+++++++++++++++++++++++++++")
-#         name = request.POST.get('name')
-#         # print(name)
-#         print("-------------sdsh----------")
-#         if request.user.is_anonymous:
-#             return redirect("login")
-#         else:
-#             product = Product.objects.get(id = name)
-#             comm = request.POST.get("comments")
-#             # print(comm)
-#             comment = Comments()
-       
-#             comment.body = request.POST['comments']
-#             comment.user     = request.user
-#             comment.product=product
-    
-#             comment.save()
-#             return redirect("productview",name= product.name)
-#     return render(request,"app/see_product.html")
-    # return render(request,"app/base.html")
+def addcomments(request):
+    if request.method =="POST":
+        print("+++++++++++++++++++++++++++")
+        name = request.POST.get('name')
+        # print(name)
+        print("-------------sdsh----------")
+        if request.user.is_anonymous:
+            return redirect("login")
+        # elif request.user ==:
+        #     pass
+        else:
+                # order = Order.objects.filter(user = request.user)
+                # print(order[0].user)
+            product = Product.objects.get(id = name)
+            if Order.objects.filter(user = request.user) and Order.objects.filter(product_id = name):
+
+                comm = request.POST.get("comments")
+                print(comm)
+                comment = Comments()
+        
+                comment.body = comm
+                comment.order = Order.objects.filter(user = request.user)[0]
+                comment.product=product
+        
+                comment.save()
+            else:
+                pass
+            return redirect("productview",name= product.name)
+    return render(request,"app/see_product.html")
+    return render(request,"app/base.html")
 
 def check_pincode(request):
     if request.method =="POST":
@@ -387,7 +398,7 @@ def cartpage(request,id):
     price_quantity={}
     now = datetime.datetime.now().strftime('%A')
     day  =offer(now)
-    print(day)
+    print("============================day============================",day)
     k=''
     for k,v in day.items():
         category = k
@@ -540,3 +551,35 @@ def checkout(request,id):
     context = {"order":order} 
        
     return render(request,"app/order.html",context)
+
+def rating(request):
+    if request.method =="POST":
+        print("+++++++++++++++++++++++++++")
+        name = request.POST.get("name")
+        # print(name)
+        print("-------------sdsh----------")
+        if request.user.is_anonymous:
+            return redirect("login")
+        # elif request.user ==:
+        #     pass
+        else:
+                # order = Order.objects.filter(user = request.user)
+                # print(order[0].user)
+            product = Product.objects.get(id = name)
+            if Order.objects.filter(user = request.user) and Order.objects.filter(product_id = name):
+
+                choice = request.POST.get("ratingname")
+                print(choice)
+                rating = Rating()
+        
+                rating.choice = choice
+                rating.order = Order.objects.filter(user = request.user)[0]
+                rating.product=product
+
+                rating.save()
+            else:
+                pass
+            return redirect("productview",name= product.name)
+    return render(request,"app/see_product.html")
+    # print(request.POST["ratingname"])
+    # return render(request,"app/base.html")

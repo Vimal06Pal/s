@@ -3,7 +3,8 @@
 {% block title%}E-shop{% endblock %}
 
 {% block body %}
-{{c.5.product_quantity.0.user}}
+{% comment %} {{c.1.userr}} {% endcomment %}
+{{c.6.all_rating }}
 
   <div class="container-fluid">
     <div class="row mt-5" >
@@ -50,8 +51,8 @@
   <form  method = "post" action="/addcomment">
       {% csrf_token %}
       <div class="mb-20 ">
-  <h2> Comments ({{c.3.all_comments.count}})</h2>
-  <label for="content" class="form-label"> post Comments</label style="margin-left :300px">
+  <h2> Reviews ({{c.3.all_comments.count}})</h2>
+  <label for="content" class="form-label"> Reviews</label style="margin-left :300px">
           <textarea type="text" class="form-control" style="margin-bottom:5px" id="commentid" name= "comments" cols="20" rows="1"></textarea>
           <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
           <button type="submit" class="btn btn-primary">Submit</button>
@@ -66,7 +67,7 @@
   {% comment %} <h5>{{ value.0.user }}</h5> {% endcomment %}
       {% for val in value %}
   <div class= "row my-3"> 
-      <div class ="col-md-2"><strong> {{val.user}}-</strong> </div>  
+      <div class ="col-md-2"><strong> {{c.1.userr}}-</strong> </div>  
       <div class ="col-md-10"> {{val.body}}</div>
      
   </div>  
@@ -168,9 +169,385 @@
     </div>
 
 <div class="col-lg-4 mx-auto">
+    <form  method = "post" action="/rating">
+      {% csrf_token %}
+      <div class="mb-20 ">
+        <h2> Ratings ({{c.3.all_comments.count}})</h2>
+        {% comment %} <label for="content" class="form-label"> 1</label style="margin-left :300px"> {% endcomment %}
+          {% comment %} <textarea type="text" class="form-control" style="margin-bottom:5px" id="commentid" name= "comments" cols="20" rows="1"></textarea> {% endcomment %}
+          <input type="hidden" id="Id_1" name="ratingname" value={{1}}>
+          <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
 
+          <button type="submit" class="btn btn-primary">1</button>
+
+
+    </div>
+    </form>
+
+
+
+
+  <div class="col-lg-2 mx-auto">
+    <form  method = "post" action="/rating">
+      {% csrf_token %}
+      <div class="mb-20 ">
+        <input type="hidden" id="Id_2" name="ratingname" value={{2}}>
+        <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+
+            <button type="submit" class="btn btn-primary">2</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-2 mx-auto">
+    <form  method = "post" action="/rating">
+      {% csrf_token %}
+    <div class="mb-20 ">
+      <input type="hidden" id="Id_3" name="ratingname" value={{3}}>
+      <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+
+          <button type="submit" class="btn btn-primary">3</button>
+  </div>
+  </form>
+  </div>
+
+  <div class="col-lg-4 mx-auto">
+    <form  method = "post" action="/rating">
+      {% csrf_token %}
+    <div class="mb-20 ">
+      <input type="hidden" id="Id_4" name="ratingname" value={{4}}>
+      <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+
+          <button type="submit" class="btn btn-primary">4</button>
+  </div>
+  </form>
+  </div>
+
+  <div class="col-lg-4 mx-auto">
+    <form  method = "post" action="/rating">
+      {% csrf_token %}
+    <div class="mb-20 ">
+      <input type="hidden" id="Id_5" name="ratingname" value={{5}}>
+      <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+          <button type="submit" class="btn btn-primary">5</button>
+  </div>
+
+  </form>
+    </div>
+
+
+<br></br>
+
+
+    {% for value in c.6.all_rating %}
++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% for val in value %} {% endcomment %}
+    <div class= "row my-3"> 
+        <div class ="col-md-2"><strong> {{c.1.userr}}-</strong> 
+        <div class ="col-md-2"> <strong>{{value.choice}}</strong></div>
+
+
+      
+    </div>  
 
   </div>
+
+        {% comment %} <h3 style ="margin-left:30px">{{val.user}}</h3>
+        <br></br>
+        <h5 style ="margin-left:30px">{{val.body}}<h5> {% endcomment %}
+    {% comment %} {% endfor %} {% endcomment %}
+    {% endfor %}
 
 {% endblock body %} 
 
