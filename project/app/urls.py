@@ -25,6 +25,9 @@ urlpatterns = [
     path("remove_item_cart",views.remove_item_cart,name="remove_add_cart"),
     path("check-out/<int:id>/",views.checkout,name="check-out"),
     path("rating",views.rating,name="rating"),
+    path("coupon",views.add_coupons,name="coupon"),
+
+
 
 
 

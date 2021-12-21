@@ -1,0 +1,35 @@
+{% extends 'app/base.html' %}
+
+{% block title%}Blogz Page{% endblock %}
+
+{% block body %} 
+<div class ="container my-3"> 
+<h3>Add Coupon</h3>
+<form  method = "post" action="" enctype = 'multipart/form-data'>
+    {% csrf_token %}
+  <div class="container">
+
+  <div class="mb-2">
+    <label for="name" class="form-label">coupon</label>
+    <input type="text" class="form-control" id="couponid" name = "coupon_name">
+  </div>
+
+
+  <div class="mb-2">
+    <label for="categorylabel" class="form-label">Category</label>
+    <div>
+    <select id="categories" name="category">
+        {% for value in getall_category %}
+        <option value={{value}}>{{value}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    </div>
+<button type="submit" class="btn btn-primary">Submit</button>
+<div>
+
+</div>
+</form>
+</div>
+{% endblock body %} 

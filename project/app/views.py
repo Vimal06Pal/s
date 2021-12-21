@@ -6,6 +6,10 @@ from django.contrib.auth import logout
 from django.views import View
 from geopy.geocoders import Nominatim
 from .helper import get_place, offer
+from django.db.models import Q
+
+import datetime
+
 
 
 
@@ -60,7 +64,7 @@ def add_category(request):
 
 def all_products(request):
     products=None
-    print(request.user)
+    # print(request.user)
     # print(products)
     categories = Category.get_all_categories()
     # print(categories)
@@ -75,6 +79,45 @@ def all_products(request):
 
         demo_list= demo_list+file
     categoryId=None
+
+    now = datetime.datetime.now().strftime('%A')
+    day  =offer(now)
+
+    k=''
+    for k,v in day.items():
+        category = k
+        discount = v
+    # print(category,discount)
+    try:
+        print("===============try executring =============")
+        category_offer = Category.objects.get(name = category)
+        categoryid = (category_offer.id)
+
+        product = Product.objects.get(category_id = categoryid)
+        discounted = ((product.price * discount)/100)
+        discounted_price = product.price - discounted
+        product.offer_price = discounted_price
+
+        # print(product)
+        # for prod in product:
+        product.offer = True
+        product.save()
+# Entry.objects.filter(~Q(id=3))
+
+        other_product = Product.objects.filter(~Q(category_id =categoryid))
+        # print(other_product)
+        for other in other_product:
+            other.offer = False
+            other.offer_price = other.price
+            other.save()
+        
+
+
+    except:
+        print("===============except executring =============")
+
+        pass
+
     try:
         categoryId = request.GET["category"]
         # print(categoryId)
@@ -85,7 +128,7 @@ def all_products(request):
         # print(products)
     else:
         products=Product.get_all_products()
-        print(products)
+        # print(products)
     
     if request.user.is_anonymous:
         context1= {}
@@ -223,7 +266,7 @@ def productview(request,name):
     files = product.multiple_images
     file =str(files).split('/')
     file = file[:len(file)-1]
-    print(file)
+    # print(file)
     context3= {}
     all_comments  =Comments.objects.filter(product = product)
     context3 ={"all_comments":all_comments}
@@ -232,7 +275,7 @@ def productview(request,name):
     context6 = {"all_rating":all_rating} 
     # try:
     product_quantity = Cart.objects.filter(product = product, user = request.user)
-    print(product_quantity)
+    # print(product_quantity)
     # except:
     #     pass
     context5 ={"product_quantity":product_quantity}
@@ -240,8 +283,15 @@ def productview(request,name):
     context4 ={}
     try:
         pincode = Pincode.objects.get(user = request.user)
-        print(pincode.address)
+        # print(pincode.address)
         context4 = {"pincode":pincode}
+    except:
+        pass
+    print("===================")
+    try:
+        coupons = Coupon.objects.filter(category = product.category)
+        context7 = {"coupons":coupons}
+        print("coupon",coupons)
     except:
         pass
   
@@ -255,7 +305,7 @@ def productview(request,name):
     else:
         context1 = {"userr":request.user}
     
-    return render(request,"app/see_product.html",{"c":[context,context1,context2,context3,context4,context5,context6]})
+    return render(request,"app/see_product.html",{"c":[context,context1,context2,context3,context4,context5,context6,context7]})
 
 def addcomments(request):
     if request.method =="POST":
@@ -384,7 +434,6 @@ def add_to_cart(request):
     # pass
 
 
-import datetime
 # print((now.strftime("%A"))=="Wednesday")
 def cartpage(request,id):
     if request.method =="POST":
@@ -396,29 +445,29 @@ def cartpage(request,id):
     cart = Cart.objects.filter(user = request.user)
     print("=============",cart)
     price_quantity={}
-    now = datetime.datetime.now().strftime('%A')
-    day  =offer(now)
-    print("============================day============================",day)
-    k=''
-    for k,v in day.items():
-        category = k
-        discount = v
+    # now = datetime.datetime.now().strftime('%A')
+    # day  =offer(now)
+    # print("============================day============================",day)
+    # k=''
+    # for k,v in day.items():
+    #     category = k
+    #     discount = v
 
     grand_total= 0
     for c in cart:
         
         # l.append(c.product.price)
         # l.append(c.quantity)
-        if(c.product.category.name == k):
-            discounted_price = ((c.product.price * discount)/100)
-            price = c.product.price-discounted_price
-            p = price * c.quantity
-            grand_total = grand_total+p
-            pass
-        else:
-            prices = c.product.price * c.quantity
-            # price_quantity[c.product.id] = prices
-            grand_total= grand_total+prices
+        # if(c.product.category.name == k):
+        #   discounted_price = ((c.product.price * discount)/100)
+        #     price = c.product.price-discounted_price  
+        p = c.product.offer_price * c.quantity
+        grand_total = grand_total+p
+        pass
+        # else:
+        #     prices = c.product.price * c.quantity
+        #     # price_quantity[c.product.id] = prices
+        #     grand_total= grand_total+prices
 
         # print(c.product.price)
         # print(c.quantity)
@@ -539,7 +588,7 @@ def checkout(request,id):
         order = Order()
         order.product = item.product
         order.user = request.user
-        order.price = item.product.price * item.quantity
+        order.price = item.product.offer_price * item.quantity
         order.quantity = item.quantity
         order.address = address
         order.phone = phone
@@ -583,3 +632,23 @@ def rating(request):
     return render(request,"app/see_product.html")
     # print(request.POST["ratingname"])
     # return render(request,"app/base.html")
+
+
+def add_coupons(request):
+    # print(request.POST)
+    if request.method =="POST":
+        coupon_offerd = request.POST["coupon_name"]
+        print(coupon_offerd)
+        category = request.POST['category']
+
+
+        coupons = Coupon(coupon = coupon_offerd,category = Category.objects.get(name = category))
+        coupons.save()
+    
+        # category = Category(name = category_item)
+        # category.save()
+    getall_category = Category.objects.all()
+    context = {"getall_category":getall_category}
+    return render(request,"app/coupon.html",context)
+
+    # category = Category.objects.get(name = category)

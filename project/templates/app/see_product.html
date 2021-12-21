@@ -3,8 +3,8 @@
 {% block title%}E-shop{% endblock %}
 
 {% block body %}
-{% comment %} {{c.1.userr}} {% endcomment %}
-{{c.6.all_rating }}
+{{c.7.coupons.0.category}}
+{% comment %} {{c.6.all_rating }} {% endcomment %}
 
   <div class="container-fluid">
     <div class="row mt-5" >
@@ -19,6 +19,8 @@
           
           
         </div>
+
+        
       </div>
 
       <div class="col-lg-4 mx-auto">
@@ -37,7 +39,7 @@
         {% comment %} <img src="/{{product.image}}" class="card-img-top" style="width:250px;height:200px" alt="..."> {% endcomment %}
         <div class="card-body">
         <h3 class="card-title">{{c.0.products.name }}</h3>
-        <h1 class="card-title">Rs {{c.0.products.price }}.00</h1>
+        <h1 class="card-title">Rs {{c.0.products.offer_price }}.00</h1>
 
 
         <p class="card-text">{{c.0.products.description}}</p>
@@ -80,6 +82,28 @@
   {% endfor %}
 </br>
 </div>
+<div class= "row my-3"> 
+  <div class ="col-md-2">  
+<form  method = "post" action="" enctype = 'multipart/form-data'>
+  {% csrf_token %}
+
+  <div class="container">
+    <div class="mb-2">
+      <label for="categorylabel" class="form-label">Category</label>
+      <div>
+      <select id="categories" name="category">
+          {% for value in c.7.coupons %}
+          {% comment %} {{value}} {% endcomment %}
+          <option value={{value.coupon}}>{{value.coupon}} off</option>
+          {% endfor %}
+        </select>
+      </div>
+  
+      </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <div>
+  </div>
+</div>
 
 </div>
 
@@ -105,7 +129,7 @@
       <h6 class="card-title">Delivert not available</h6>
         {% endif %}
       
-        <h1 class="card-title">Rs {{c.0.products.price }}.00</h1>
+        <h1 class="card-title">Rs {{c.0.products.offer_price }}.00</h1>
 
     </div>
 

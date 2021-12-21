@@ -21,11 +21,13 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
-    price  =models.IntegerField(default=0)
+    price  = models.IntegerField(default=0)
     description = models.CharField(max_length=200,default='',blank=True)
     image =models.ImageField(upload_to="product/")
     category = models.ForeignKey(Category, on_delete=CASCADE)
     multiple_images = models.TextField(max_length=255)
+    offer =  models.BooleanField(default = False)
+    offer_price = models.IntegerField(default = 0)
 
 
     @staticmethod
@@ -94,6 +96,14 @@ class Rating(models.Model):
 
     def __str__(self):
         return (self.product.name)
+
+class Coupon(models.Model):
+    coupon = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=CASCADE)
+
+
+    # def __str__(self):
+    #     return(self.coupon)
 
 
     

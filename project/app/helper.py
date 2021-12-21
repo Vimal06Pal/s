@@ -22,8 +22,22 @@ now = datetime.datetime.now().strftime('%A')
 
 def offer(day):
     d={}
-    if day =="Wednesday":
+    if day == "Monday":
+        pass
+    elif day == "Tuesday":
         d["saree"] = 10
+    elif day =="Wednesday":
+        pass
+    elif day == "Thursday":
+        pass
+    elif day == "Friday":
+        pass
+    elif day == "Saturday":
+        pass
+    elif day =="Sunday":
+        pass
+    else:
+        pass
     return(d)
     # else:
     #     return(0)
