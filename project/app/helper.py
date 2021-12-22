@@ -1,5 +1,9 @@
 # Importing required module
 from geopy.geocoders import Nominatim
+from datetime import datetime
+
+# print(len(str(datetime.today())))
+print(datetime.today().strftime('We are the %d-%m-%Y'))
 
 # Using Nominatim Api
 def get_place(zipcode):
@@ -25,9 +29,12 @@ def offer(day):
     if day == "Monday":
         pass
     elif day == "Tuesday":
-        d["saree"] = 10
-    elif day =="Wednesday":
+        # d["saree"] = 10
         pass
+    elif day =="Wednesday":
+        d["saree"] = 10
+
+        # pass/
     elif day == "Thursday":
         pass
     elif day == "Friday":

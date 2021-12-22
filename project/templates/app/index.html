@@ -54,7 +54,13 @@
         <a href="/productview/{{product.name}}" style="text-decoration:none;" class="text-dark">
         <h5><b>{{product.name}}</b></h5>
         </a>
-        <p class="card-text">Rs{{product.offer_price}}</p>
+        {% if product.offer %}
+        <del><p class="card-text">Rs{{product.price}}</p></del>
+        <h4 class="card-text">Rs{{product.offer_price}}</h4>
+        {% else%}
+        {% comment %} <del><p class="card-text">Rs{{product.offer_price}}</p></del> {% endcomment %}
+        <h4 class="card-text">Rs{{product.offer_price}}</h4>
+        {% endif %}
         <p class="card-text">{{product.description}}</p>
         {% comment %} <a href="#" class="btn btn-primary">ADD to Cart</a> {% endcomment %}
         </div>

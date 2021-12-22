@@ -3,7 +3,7 @@
 {% block title%}E-shop{% endblock %}
 
 {% block body %}
-{{c.7.coupons.0.category}}
+{{c.7.coupons}}
 {% comment %} {{c.6.all_rating }} {% endcomment %}
 
   <div class="container-fluid">
@@ -40,6 +40,7 @@
         <div class="card-body">
         <h3 class="card-title">{{c.0.products.name }}</h3>
         <h1 class="card-title">Rs {{c.0.products.offer_price }}.00</h1>
+        {% comment %} <p><del>{{c.0.products.price}}</del></p> {% endcomment %}
 
 
         <p class="card-text">{{c.0.products.description}}</p>
@@ -53,16 +54,14 @@
   <form  method = "post" action="/addcomment">
       {% csrf_token %}
       <div class="mb-20 ">
-  <h2> Reviews ({{c.3.all_comments.count}})</h2>
-  <label for="content" class="form-label"> Reviews</label style="margin-left :300px">
+        <h2> Reviews ({{c.3.all_comments.count}})</h2>
+          <label for="content" class="form-label"> Reviews</label style="margin-left :300px">
           <textarea type="text" class="form-control" style="margin-bottom:5px" id="commentid" name= "comments" cols="20" rows="1"></textarea>
           <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
           <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
 
-
-     </div>
-
-  </form>
+    </form>
   <br>
  
   {% for value in c.3.values %}
@@ -82,19 +81,25 @@
   {% endfor %}
 </br>
 </div>
-<div class= "row my-3"> 
-  <div class ="col-md-2">  
-<form  method = "post" action="" enctype = 'multipart/form-data'>
-  {% csrf_token %}
 
-  <div class="container">
-    <div class="mb-2">
-      <label for="categorylabel" class="form-label">Category</label>
-      <div>
-      <select id="categories" name="category">
+
+<div class= "row my-3"> 
+  <div class ="col-md-2">
+    {% if  c.7.coupons  %}  
+    <form  method = "post" action="/coupon_apply" enctype = 'multipart/form-data'>
+      {% csrf_token %}
+
+      <div class="container">
+        <div class="mb-2">
+          <label for="categorylabel" class="form-label">Category</label>
+
+        <div>
+        <select id="couponid" name="coupon">
+          <option value=0>None</option>
+
           {% for value in c.7.coupons %}
-          {% comment %} {{value}} {% endcomment %}
-          <option value={{value.coupon}}>{{value.coupon}} off</option>
+          <option value={{value.coupon}}>{{value.coupon}} %off</option>
+
           {% endfor %}
         </select>
       </div>
@@ -104,6 +109,7 @@
   <div>
   </div>
 </div>
+{% endif %}
 
 </div>
 
@@ -126,7 +132,7 @@
       {% if c.4.pincode.address %}
         <h5 class="card-title">{{c.4.pincode.address}}</h5>
       {% else %}
-      <h6 class="card-title">Delivert not available</h6>
+      <h6 class="card-title">Delivery not available</h6>
         {% endif %}
       
         <h1 class="card-title">Rs {{c.0.products.offer_price }}.00</h1>
@@ -226,337 +232,44 @@
   <div class="col-lg-2 mx-auto">
     <form  method = "post" action="/rating">
       {% csrf_token %}
-    <div class="mb-20 ">
-      <input type="hidden" id="Id_3" name="ratingname" value={{3}}>
-      <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+      <div class="mb-20 ">
+        <input type="hidden" id="Id_3" name="ratingname" value={{3}}>
+        <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
 
-          <button type="submit" class="btn btn-primary">3</button>
-  </div>
-  </form>
-  </div>
-
-  <div class="col-lg-4 mx-auto">
-    <form  method = "post" action="/rating">
-      {% csrf_token %}
-    <div class="mb-20 ">
-      <input type="hidden" id="Id_4" name="ratingname" value={{4}}>
-      <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
-
-          <button type="submit" class="btn btn-primary">4</button>
-  </div>
-  </form>
+            <button type="submit" class="btn btn-primary">3</button>
+      </div>
+    </form>
   </div>
 
   <div class="col-lg-4 mx-auto">
     <form  method = "post" action="/rating">
       {% csrf_token %}
-    <div class="mb-20 ">
-      <input type="hidden" id="Id_5" name="ratingname" value={{5}}>
-      <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
-          <button type="submit" class="btn btn-primary">5</button>
+      <div class="mb-20 ">
+        <input type="hidden" id="Id_4" name="ratingname" value={{4}}>
+        <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+
+            <button type="submit" class="btn btn-primary">4</button>
+      </div>
+    </form>
   </div>
 
-  </form>
-    </div>
+  <div class="col-lg-4 mx-auto">
+    <form  method = "post" action="/rating">
+        {% csrf_token %}
+      <div class="mb-20 ">
+        <input type="hidden" id="Id_5" name="ratingname" value={{5}}>
+        <input type="hidden" id="Id" name="name" value={{c.0.products.id}}>
+            <button type="submit" class="btn btn-primary">5</button>
+      </div>
+
+    </form>
+  </div>
 
 
 <br></br>
 
 
     {% for value in c.6.all_rating %}
-+
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} {% for val in value %} {% endcomment %}
     <div class= "row my-3"> 
         <div class ="col-md-2"><strong> {{c.1.userr}}-</strong> 
         <div class ="col-md-2"> <strong>{{value.choice}}</strong></div>
@@ -567,10 +280,7 @@
 
   </div>
 
-        {% comment %} <h3 style ="margin-left:30px">{{val.user}}</h3>
-        <br></br>
-        <h5 style ="margin-left:30px">{{val.body}}<h5> {% endcomment %}
-    {% comment %} {% endfor %} {% endcomment %}
+
     {% endfor %}
 
 {% endblock body %} 

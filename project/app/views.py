@@ -102,6 +102,9 @@ def all_products(request):
         # for prod in product:
         product.offer = True
         product.save()
+
+        # products = Product.objects.get(offer = True)
+        # print(products)
 # Entry.objects.filter(~Q(id=3))
 
         other_product = Product.objects.filter(~Q(category_id =categoryid))
@@ -115,8 +118,13 @@ def all_products(request):
 
     except:
         print("===============except executring =============")
+        products = Product.objects.all()
+        for product in products:
+            product.offer = False
+            product.offer_price = product.price
+            product.save()
 
-        pass
+        # pass
 
     try:
         categoryId = request.GET["category"]
@@ -293,6 +301,7 @@ def productview(request,name):
         context7 = {"coupons":coupons}
         print("coupon",coupons)
     except:
+        context7 = {}
         pass
   
     context2 = {"demo":file}
@@ -635,14 +644,27 @@ def rating(request):
 
 
 def add_coupons(request):
-    # print(request.POST)
+    print(request.POST)
     if request.method =="POST":
         coupon_offerd = request.POST["coupon_name"]
         print(coupon_offerd)
         category = request.POST['category']
+        try:
+            # start_time = request.POST['start_time_name']
+            start_date = request.POST['start_date_name']
+            # end_time =  request.POST['end_time_name']
+            end_date = request.POST['end_date_name']
+
+           
+            # start_time_date = start_date+'_'+start_time
+            # end_time_date = end_date+'_'+end_time
+            # print(start_time_date)
+            # pass
+        except:
+            pass
 
 
-        coupons = Coupon(coupon = coupon_offerd,category = Category.objects.get(name = category))
+        coupons = Coupon(coupon = coupon_offerd,category = Category.objects.get(name = category),start_time = start_date, end_time = end_date )
         coupons.save()
     
         # category = Category(name = category_item)
@@ -652,3 +674,39 @@ def add_coupons(request):
     return render(request,"app/coupon.html",context)
 
     # category = Category.objects.get(name = category)
+
+def coupons_apply(request):
+    print(request.POST)
+    coupon_percent_off = int(request.POST['coupon'])
+    if coupon_percent_off =='0':
+        pass
+    else:
+        coupons=Coupon.objects.get(coupon = coupon_percent_off)
+        product_id=request.POST["name"]
+        product=Product.objects.get(id = product_id)
+
+
+        # print("========coupons==========",coupons.coupon)
+        if coupons.count != 3:
+            coupons.count = coupons.count+1
+            coupons.offer = False
+            percent_off = coupons.coupon
+            offer_price = product.offer_price
+            # print(type(offer_price))
+            # print(type(product.offer_price))
+            discounted = ((offer_price * percent_off)/100)
+
+            # coupon_discount = ((offer_price*coupon_percent_off)/100)
+            discount_price = offer_price-discounted
+            # print(discount_price)
+            product.offer_price = discount_price
+            product.save()
+            coupons.save()
+            return redirect("productview",name= product.name)
+        else:
+            print("limit reached....!")
+
+    return redirect("productview",name= product.name)
+
+    # return render(request,"app/base.html")
+

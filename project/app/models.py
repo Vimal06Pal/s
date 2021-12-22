@@ -32,7 +32,7 @@ class Product(models.Model):
 
     @staticmethod
     def get_all_products():
-        return Product.objects.all()
+        return Product.objects.all().order_by('id')
 
     @staticmethod
     def get_products_by_category_id(category_id):
@@ -100,6 +100,11 @@ class Rating(models.Model):
 class Coupon(models.Model):
     coupon = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=CASCADE)
+    count = models.IntegerField(default = 0)
+    offer =  models.BooleanField(default = False)
+    start_time = models.DateField(null = True,blank = True)
+    end_time = models.DateField(null = True, blank = True)
+
 
 
     # def __str__(self):
